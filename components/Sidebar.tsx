@@ -1,5 +1,5 @@
 'use client'
-
+import { BarChart3 } from 'lucide-react'
 import Link from 'next/link'
 
 import { usePathname } from 'next/navigation'
@@ -35,6 +35,12 @@ const links = [
     label: 'Interview',
     icon: LayoutDashboard,
   },
+
+  {
+  href: '/dashboard',
+  label: 'Dashboard',
+  icon: BarChart3,
+},
 
   {
     href: '/history',

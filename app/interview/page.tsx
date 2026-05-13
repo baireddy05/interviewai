@@ -96,8 +96,15 @@ useEffect(() => {
   const [sessionId, setSessionId] =
   useState<string | null>(null)
 
-const [loadingNextQuestion, setLoadingNextQuestion] =
-  useState(false)
+const [
+  loadingNextQuestion,
+  setLoadingNextQuestion,
+] = useState(false)
+
+const [
+  finishingInterview,
+  setFinishingInterview,
+] = useState(false)
 
   const [previousQuestions, setPreviousQuestions] =
     useState<string[]>([])
@@ -234,74 +241,164 @@ const [loadingNextQuestion, setLoadingNextQuestion] =
 
   async function nextQuestion() {
 
-  setLoadingNextQuestion(true)
+  // STORE CURRENT QUESTION
+  const currentQuestion = {
 
-  // SAVE QUESTION
-  if (user && sessionId) {
+    role,
+    topic,
+    difficulty,
 
-    await supabase
-      .from('interviews')
-      .insert({
+    question,
+    answer,
 
-        session_id: sessionId,
+    feedback,
 
-        user_id: user.id,
-
-        role,
-        topic,
-        difficulty,
-
-        question,
-        answer,
-
-        feedback,
-
-        score: score || 0,
-
-      })
+    score: score || 0,
 
   }
 
-  // LAST QUESTION
+  const updatedQuestions = [
+
+    ...sessionQuestions,
+
+    currentQuestion,
+
+  ]
+
+  setSessionQuestions(updatedQuestions)
+
+  // FINAL QUESTION
   if (questionNumber >= TOTAL_QUESTIONS) {
 
-    const average =
-      allScores.reduce((a, b) => a + b, 0) /
-      allScores.length
+    setFinishingInterview(true)
 
-    // UPDATE SESSION
-    await supabase
-      .from('interview_sessions')
-      .update({
+    try {
 
-        average_score: average,
+      if (user) {
 
-      })
+        // Average
+        const average =
+          updatedQuestions.reduce(
+            (acc, q) =>
+              acc + Number(q.score),
+            0
+          ) / updatedQuestions.length
 
-      .eq('id', sessionId)
+        // CREATE SESSION
+        const {
+          data: sessionData,
+          error: sessionError,
+        } = await supabase
 
-    setTimeout(() => {
+          .from('interview_sessions')
+
+          .insert({
+
+            user_id: user.id,
+
+            role,
+            topic,
+            difficulty,
+
+            average_score:
+              average,
+
+          })
+
+          .select()
+
+          .single()
+
+        console.log(sessionError)
+
+        // SAVE QUESTIONS
+        if (sessionData) {
+
+          const questionsToInsert =
+            updatedQuestions.map(
+              (q) => ({
+
+                session_id:
+                  sessionData.id,
+
+                user_id:
+                  user.id,
+
+                role: q.role,
+
+                topic: q.topic,
+
+                difficulty:
+                  q.difficulty,
+
+                question:
+                  q.question,
+
+                answer:
+                  q.answer,
+
+                feedback:
+                  q.feedback,
+
+                score: q.score,
+
+              })
+            )
+
+          const { error } =
+            await supabase
+
+              .from('interviews')
+
+              .insert(
+                questionsToInsert
+              )
+
+          console.log(error)
+
+        }
+
+      }
+
+      // WAIT FOR SAVE
+      await new Promise(
+        (resolve) =>
+          setTimeout(
+            resolve,
+            1200
+          )
+      )
 
       setInterviewCompleted(true)
 
-      setLoadingNextQuestion(false)
+    } catch (err) {
 
-    }, 1800)
+      console.log(err)
+
+    } finally {
+
+      setFinishingInterview(false)
+
+    }
 
     return
 
   }
 
-  // LOADING EFFECT
+  // NORMAL NEXT QUESTION
+  setLoadingNextQuestion(true)
+
   setTimeout(async () => {
 
-    setQuestionNumber((prev) => prev + 1)
+    setQuestionNumber(
+      (prev) => prev + 1
+    )
 
     await generateQuestion()
 
     setLoadingNextQuestion(false)
 
-  }, 1800)
+  }, 1200)
 
 }
 
@@ -616,6 +713,68 @@ const [loadingNextQuestion, setLoadingNextQuestion] =
         <div className="flex-1 overflow-y-auto p-10">
 
 {/* Next Question Loader */}
+
+{/* Finishing Interview Loader */}
+<AnimatePresence>
+
+  {finishingInterview && (
+
+    <motion.div
+
+      initial={{
+        opacity: 0,
+      }}
+
+      animate={{
+        opacity: 1,
+      }}
+
+      exit={{
+        opacity: 0,
+      }}
+
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-md"
+    >
+
+      <div className="flex flex-col items-center">
+
+        {/* Spinner */}
+        <motion.div
+
+          animate={{
+            rotate: 360,
+          }}
+
+          transition={{
+            duration: 0.8,
+            repeat: Infinity,
+            ease: 'linear',
+          }}
+
+          className="h-24 w-24 rounded-full border-4 border-zinc-700 border-t-green-500"
+        />
+
+        {/* Text */}
+        <h2 className="mt-10 text-4xl font-bold">
+
+          Finishing Interview
+
+        </h2>
+
+        <p className="mt-4 text-zinc-400">
+
+          Saving your session and analytics...
+
+        </p>
+
+      </div>
+
+    </motion.div>
+
+  )}
+
+</AnimatePresence>
+
 <AnimatePresence>
 
   {loadingNextQuestion && (

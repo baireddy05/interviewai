@@ -8,11 +8,12 @@ import PageTransition from '@/components/PageTransition'
 
 import {
   AuthProvider,
+  useAuth,
 } from '@/components/AuthProvider'
 
 import { usePathname } from 'next/navigation'
 
-export default function RootLayout({
+function LayoutContent({
   children,
 }: {
   children: React.ReactNode
@@ -20,9 +21,54 @@ export default function RootLayout({
 
   const pathname = usePathname()
 
-  const hideSidebar =
+  const { user } = useAuth()
+
+  // Hide sidebar on auth pages
+  const isAuthPage =
     pathname === '/login' ||
     pathname === '/signup'
+
+  // Show sidebar only if logged in
+  const showSidebar =
+    user && !isAuthPage
+
+  return (
+
+    <>
+
+      {/* Sidebar */}
+      {showSidebar && (
+        <Sidebar />
+      )}
+
+      {/* Main */}
+      <main
+        className={
+          showSidebar
+            ? 'ml-[260px]'
+            : ''
+        }
+      >
+
+        <PageTransition>
+
+          {children}
+
+        </PageTransition>
+
+      </main>
+
+    </>
+
+  )
+
+}
+
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode
+}) {
 
   return (
 
@@ -32,25 +78,11 @@ export default function RootLayout({
 
         <AuthProvider>
 
-          {!hideSidebar && (
-            <Sidebar />
-          )}
+          <LayoutContent>
 
-          <main
-            className={
-              hideSidebar
-                ? ''
-                : 'ml-[260px]'
-            }
-          >
+            {children}
 
-            <PageTransition>
-
-              {children}
-
-            </PageTransition>
-
-          </main>
+          </LayoutContent>
 
         </AuthProvider>
 
