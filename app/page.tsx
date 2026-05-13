@@ -1,65 +1,169 @@
-import Image from "next/image";
+'use client';
 
-export default function Home() {
+import Link from 'next/link'
+import { motion } from 'framer-motion'
+export default function HomePage() {
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+    <motion.main  initial={{ opacity: 0 }}
+    animate={{ opacity: 1}}
+  transition={{ duration: 0.7 }} className="relative min-h-screen overflow-hidden bg-[#050505] text-white">
+
+      {/* Background Glow */}
+      <div className="absolute left-[-120px] top-[-120px] h-[350px] w-[350px] rounded-full bg-blue-500/20 blur-3xl" />
+      <div className="absolute bottom-[-120px] right-[-120px] h-[350px] w-[350px] rounded-full bg-purple-500/20 blur-3xl" />
+
+      <div className="relative z-10 mx-auto flex min-h-screen max-w-7xl flex-col items-center justify-center px-6 py-20 text-center">
+
+        {/* Badge */}
+        <div className="rounded-full border border-zinc-800 bg-zinc-900/80 px-4 py-2 text-sm text-zinc-400 backdrop-blur-xl">
+          AI Powered Interview Preparation Platform
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+
+        {/* Heading */}
+        <h1 className="mt-8 max-w-6xl text-7xl font-extrabold leading-tight tracking-tight">
+
+          Crack Technical Interviews
+
+          <span className="bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent">
+            {" "}With AI
+          </span>
+
+        </h1>
+
+        {/* Description */}
+        <p className="mt-8 max-w-3xl text-xl leading-relaxed text-zinc-400">
+          Practice technical interviews with AI-generated questions,
+          receive instant feedback, track interview history,
+          and improve your confidence for real-world interviews.
+        </p>
+
+        {/* Main Buttons */}
+        <div className="mt-12 flex flex-wrap items-center justify-center gap-5">
+
+          {/* Interview Button */}
+          <Link href="/interview">
+
+            <button className="group relative overflow-hidden rounded-2xl bg-white px-8 py-4 font-semibold text-black transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:shadow-blue-500/30">
+
+              <span className="relative z-10">
+                Start Interview
+              </span>
+
+              <div className="absolute inset-0 bg-gradient-to-r from-blue-400 to-purple-500 opacity-0 transition-opacity duration-300 group-hover:opacity-20" />
+
+            </button>
+
+          </Link>
+
+          {/* History Button */}
+          <Link href="/history">
+
+            <button className="rounded-2xl border border-zinc-700 bg-zinc-900/40 px-8 py-4 font-medium text-zinc-300 transition-all duration-300 hover:bg-zinc-800 hover:text-white hover:scale-105">
+
+              Interview History
+
+            </button>
+
+          </Link>
+
         </div>
-      </main>
-    </div>
-  );
+
+        {/* Stats */}
+        <div className="mt-20 grid w-full max-w-5xl grid-cols-1 gap-6 md:grid-cols-3">
+
+          <div className="rounded-3xl border border-zinc-800 bg-zinc-900/60 p-8 backdrop-blur-xl">
+
+            <h2 className="text-5xl font-extrabold text-blue-400">
+              AI
+            </h2>
+
+            <p className="mt-4 text-lg text-zinc-300">
+              AI-Powered Questions
+            </p>
+
+          </div>
+
+          <div className="rounded-3xl border border-zinc-800 bg-zinc-900/60 p-8 backdrop-blur-xl">
+
+            <h2 className="text-5xl font-extrabold text-purple-400">
+              24/7
+            </h2>
+
+            <p className="mt-4 text-lg text-zinc-300">
+              Interview Practice
+            </p>
+
+          </div>
+
+          <div className="rounded-3xl border border-zinc-800 bg-zinc-900/60 p-8 backdrop-blur-xl">
+
+            <h2 className="text-5xl font-extrabold text-green-400">
+              Smart
+            </h2>
+
+            <p className="mt-4 text-lg text-zinc-300">
+              AI Feedback Analysis
+            </p>
+
+          </div>
+
+        </div>
+
+        {/* Feature Cards */}
+        <div className="mt-24 grid w-full max-w-6xl grid-cols-1 gap-6 md:grid-cols-3">
+
+          {/* Card 1 */}
+          <div className="rounded-3xl border border-zinc-800 bg-zinc-900/60 p-8 backdrop-blur-xl transition hover:-translate-y-2 hover:border-blue-500/40">
+
+            <div className="text-5xl">🤖</div>
+
+            <h3 className="mt-5 text-2xl font-bold">
+              AI Interviews
+            </h3>
+
+            <p className="mt-4 leading-relaxed text-zinc-400">
+              Generate realistic interview questions powered by
+              modern AI models and prepare for real company interviews.
+            </p>
+
+          </div>
+
+          {/* Card 2 */}
+          <div className="rounded-3xl border border-zinc-800 bg-zinc-900/60 p-8 backdrop-blur-xl transition hover:-translate-y-2 hover:border-purple-500/40">
+
+            <div className="text-5xl">📊</div>
+
+            <h3 className="mt-5 text-2xl font-bold">
+              Smart Feedback
+            </h3>
+
+            <p className="mt-4 leading-relaxed text-zinc-400">
+              Receive AI-powered answer analysis, improvement
+              suggestions, and interview performance insights.
+            </p>
+
+          </div>
+
+          {/* Card 3 */}
+          <div className="rounded-3xl border border-zinc-800 bg-zinc-900/60 p-8 backdrop-blur-xl transition hover:-translate-y-2 hover:border-green-500/40">
+
+            <div className="text-5xl">📝</div>
+
+            <h3 className="mt-5 text-2xl font-bold">
+              Interview History
+            </h3>
+
+            <p className="mt-4 leading-relaxed text-zinc-400">
+              Track previous interview sessions, review answers,
+              and monitor your progress over time.
+            </p>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </motion.main>
+  )
 }
