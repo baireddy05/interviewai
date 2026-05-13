@@ -1,169 +1,222 @@
-'use client';
+'use client'
 
-import Link from 'next/link'
 import { motion } from 'framer-motion'
+
+import { useRouter } from 'next/navigation'
+
+import {
+  useAuth,
+} from '@/components/AuthProvider'
+
 export default function HomePage() {
+
+  const router = useRouter()
+
+  const { user } = useAuth()
+
   return (
-    <motion.main  initial={{ opacity: 0 }}
-    animate={{ opacity: 1}}
-  transition={{ duration: 0.7 }} className="relative min-h-screen overflow-hidden bg-[#050505] text-white">
+
+    <main className="relative min-h-screen overflow-hidden bg-[#050505] text-white">
 
       {/* Background Glow */}
-      <div className="absolute left-[-120px] top-[-120px] h-[350px] w-[350px] rounded-full bg-blue-500/20 blur-3xl" />
-      <div className="absolute bottom-[-120px] right-[-120px] h-[350px] w-[350px] rounded-full bg-purple-500/20 blur-3xl" />
+      <div className="absolute right-[-200px] top-[100px] h-[500px] w-[500px] rounded-full bg-purple-500/20 blur-3xl" />
 
-      <div className="relative z-10 mx-auto flex min-h-screen max-w-7xl flex-col items-center justify-center px-6 py-20 text-center">
+      <div className="absolute bottom-[-200px] left-[200px] h-[400px] w-[400px] rounded-full bg-blue-500/20 blur-3xl" />
+
+      {/* Hero */}
+      <section className="relative z-10 flex min-h-screen flex-col justify-center px-10 md:px-24">
 
         {/* Badge */}
-        <div className="rounded-full border border-zinc-800 bg-zinc-900/80 px-4 py-2 text-sm text-zinc-400 backdrop-blur-xl">
-          AI Powered Interview Preparation Platform
-        </div>
+        <motion.div
+
+          initial={{
+            opacity: 0,
+            y: 15,
+          }}
+
+          animate={{
+            opacity: 1,
+            y: 0,
+          }}
+
+          transition={{
+            duration: 0.4,
+          }}
+
+          className="mb-8 inline-flex w-fit items-center rounded-full border border-zinc-700 bg-zinc-900/60 px-5 py-2 text-sm text-zinc-400 backdrop-blur-md"
+        >
+
+          AI-Powered Mock Interviews
+
+        </motion.div>
 
         {/* Heading */}
-        <h1 className="mt-8 max-w-6xl text-7xl font-extrabold leading-tight tracking-tight">
+        <motion.h1
 
-          Crack Technical Interviews
+          initial={{
+            opacity: 0,
+            y: 20,
+          }}
+
+          animate={{
+            opacity: 1,
+            y: 0,
+          }}
+
+          transition={{
+            duration: 0.5,
+            delay: 0.1,
+          }}
+
+          className="max-w-5xl text-6xl font-black leading-tight md:text-8xl"
+        >
+
+          Crack Your Next{' '}
 
           <span className="bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent">
-            {" "}With AI
+
+            AI Interview
+
           </span>
 
-        </h1>
+        </motion.h1>
 
-        {/* Description */}
-        <p className="mt-8 max-w-3xl text-xl leading-relaxed text-zinc-400">
-          Practice technical interviews with AI-generated questions,
-          receive instant feedback, track interview history,
-          and improve your confidence for real-world interviews.
-        </p>
+        {/* Subtitle */}
+        <motion.p
 
-        {/* Main Buttons */}
-        <div className="mt-12 flex flex-wrap items-center justify-center gap-5">
+          initial={{
+            opacity: 0,
+            y: 15,
+          }}
 
-          {/* Interview Button */}
-          <Link href="/interview">
+          animate={{
+            opacity: 1,
+            y: 0,
+          }}
 
-            <button className="group relative overflow-hidden rounded-2xl bg-white px-8 py-4 font-semibold text-black transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:shadow-blue-500/30">
+          transition={{
+            duration: 0.5,
+            delay: 0.2,
+          }}
 
-              <span className="relative z-10">
-                Start Interview
-              </span>
+          className="mt-8 max-w-2xl text-xl leading-9 text-zinc-400"
+        >
 
-              <div className="absolute inset-0 bg-gradient-to-r from-blue-400 to-purple-500 opacity-0 transition-opacity duration-300 group-hover:opacity-20" />
+          Practice role-based AI interviews with
+          real-time feedback, scoring, analytics,
+          and personalized interview sessions.
 
-            </button>
+        </motion.p>
 
-          </Link>
+        {/* CTA */}
+        <motion.div
+
+          initial={{
+            opacity: 0,
+            y: 15,
+          }}
+
+          animate={{
+            opacity: 1,
+            y: 0,
+          }}
+
+          transition={{
+            duration: 0.5,
+            delay: 0.3,
+          }}
+
+          className="mt-12 flex flex-wrap gap-5"
+        >
+
+          {/* Start Button */}
+          <button
+
+            onClick={() => {
+
+              if (user) {
+
+                router.push('/interview')
+
+              } else {
+
+                router.push('/login')
+
+              }
+
+            }}
+
+            className="rounded-2xl bg-gradient-to-r from-blue-500 to-purple-500 px-8 py-5 text-lg font-semibold text-white transition hover:translate-y-[-2px]"
+          >
+
+            {user
+              ? 'Start Interview'
+              : 'Login to Start'}
+
+          </button>
 
           {/* History Button */}
-          <Link href="/history">
+          {user && (
 
-            <button className="rounded-2xl border border-zinc-700 bg-zinc-900/40 px-8 py-4 font-medium text-zinc-300 transition-all duration-300 hover:bg-zinc-800 hover:text-white hover:scale-105">
+            <button
 
-              Interview History
+              onClick={() =>
+                router.push('/history')
+              }
+
+              className="rounded-2xl border border-zinc-700 bg-zinc-900/60 px-8 py-5 text-lg font-semibold text-white transition hover:bg-zinc-800"
+            >
+
+              View History
 
             </button>
 
-          </Link>
+          )}
 
-        </div>
+        </motion.div>
 
-        {/* Stats */}
-        <div className="mt-20 grid w-full max-w-5xl grid-cols-1 gap-6 md:grid-cols-3">
+        {/* Logged In Indicator */}
+        {user && (
 
-          <div className="rounded-3xl border border-zinc-800 bg-zinc-900/60 p-8 backdrop-blur-xl">
+          <motion.div
 
-            <h2 className="text-5xl font-extrabold text-blue-400">
-              AI
-            </h2>
+            initial={{
+              opacity: 0,
+              y: 10,
+            }}
 
-            <p className="mt-4 text-lg text-zinc-300">
-              AI-Powered Questions
-            </p>
+            animate={{
+              opacity: 1,
+              y: 0,
+            }}
 
-          </div>
+            transition={{
+              delay: 0.4,
+            }}
 
-          <div className="rounded-3xl border border-zinc-800 bg-zinc-900/60 p-8 backdrop-blur-xl">
+            className="mt-10 inline-flex w-fit items-center gap-3 rounded-2xl border border-green-500/20 bg-green-500/10 px-5 py-4"
+          >
 
-            <h2 className="text-5xl font-extrabold text-purple-400">
-              24/7
-            </h2>
+            <div className="h-3 w-3 rounded-full bg-green-400" />
 
-            <p className="mt-4 text-lg text-zinc-300">
-              Interview Practice
-            </p>
+            <span className="text-green-300">
 
-          </div>
+              Logged in as{' '}
 
-          <div className="rounded-3xl border border-zinc-800 bg-zinc-900/60 p-8 backdrop-blur-xl">
+              <strong>
+                {user.email?.split('@')[0]}
+              </strong>
 
-            <h2 className="text-5xl font-extrabold text-green-400">
-              Smart
-            </h2>
+            </span>
 
-            <p className="mt-4 text-lg text-zinc-300">
-              AI Feedback Analysis
-            </p>
+          </motion.div>
 
-          </div>
+        )}
 
-        </div>
+      </section>
 
-        {/* Feature Cards */}
-        <div className="mt-24 grid w-full max-w-6xl grid-cols-1 gap-6 md:grid-cols-3">
+    </main>
 
-          {/* Card 1 */}
-          <div className="rounded-3xl border border-zinc-800 bg-zinc-900/60 p-8 backdrop-blur-xl transition hover:-translate-y-2 hover:border-blue-500/40">
-
-            <div className="text-5xl">🤖</div>
-
-            <h3 className="mt-5 text-2xl font-bold">
-              AI Interviews
-            </h3>
-
-            <p className="mt-4 leading-relaxed text-zinc-400">
-              Generate realistic interview questions powered by
-              modern AI models and prepare for real company interviews.
-            </p>
-
-          </div>
-
-          {/* Card 2 */}
-          <div className="rounded-3xl border border-zinc-800 bg-zinc-900/60 p-8 backdrop-blur-xl transition hover:-translate-y-2 hover:border-purple-500/40">
-
-            <div className="text-5xl">📊</div>
-
-            <h3 className="mt-5 text-2xl font-bold">
-              Smart Feedback
-            </h3>
-
-            <p className="mt-4 leading-relaxed text-zinc-400">
-              Receive AI-powered answer analysis, improvement
-              suggestions, and interview performance insights.
-            </p>
-
-          </div>
-
-          {/* Card 3 */}
-          <div className="rounded-3xl border border-zinc-800 bg-zinc-900/60 p-8 backdrop-blur-xl transition hover:-translate-y-2 hover:border-green-500/40">
-
-            <div className="text-5xl">📝</div>
-
-            <h3 className="mt-5 text-2xl font-bold">
-              Interview History
-            </h3>
-
-            <p className="mt-4 leading-relaxed text-zinc-400">
-              Track previous interview sessions, review answers,
-              and monitor your progress over time.
-            </p>
-
-          </div>
-
-        </div>
-
-      </div>
-
-    </motion.main>
   )
+
 }

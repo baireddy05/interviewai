@@ -13,11 +13,22 @@ import {
   History,
   LogOut,
   Sparkles,
+  Home,
 } from 'lucide-react'
 
 import { supabase } from '@/lib/supabase'
 
+import {
+  useAuth,
+} from '@/components/AuthProvider'
+
 const links = [
+
+  {
+    href: '/',
+    label: 'Home',
+    icon: Home,
+  },
 
   {
     href: '/interview',
@@ -37,6 +48,8 @@ export default function Sidebar() {
 
   const pathname = usePathname()
 
+  const { user } = useAuth()
+
   async function logout() {
 
     await supabase.auth.signOut()
@@ -54,7 +67,7 @@ export default function Sidebar() {
     <motion.aside
 
       initial={{
-        x: -80,
+        x: -40,
         opacity: 0,
       }}
 
@@ -64,35 +77,18 @@ export default function Sidebar() {
       }}
 
       transition={{
-  type: 'spring',
-  stiffness: 260,
-  damping: 24,
-}}
+        type: 'spring',
+        stiffness: 260,
+        damping: 24,
+      }}
 
-      className="fixed left-0 top-0 z-40 flex h-screen w-[260px] flex-col border-r border-zinc-800 bg-zinc-950/80 p-6 backdrop-blur-2xl"
+      className="fixed left-0 top-0 z-40 flex h-screen w-[260px] flex-col border-r border-zinc-800 bg-zinc-950/80 p-6 backdrop-blur-md"
     >
 
       {/* Logo */}
-      <motion.div
+      <div className="flex items-center gap-4">
 
-        initial={{
-          opacity: 0,
-          y: 20,
-        }}
-
-        animate={{
-          opacity: 1,
-          y: 0,
-        }}
-
-        transition={{
-          delay: 0.2,
-        }}
-
-        className="flex items-center gap-4"
-      >
-
-        <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-r from-blue-500 to-purple-500 shadow-lg shadow-blue-500/20">
+        <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-r from-blue-500 to-purple-500">
 
           <Sparkles />
 
@@ -110,10 +106,29 @@ export default function Sidebar() {
 
         </div>
 
-      </motion.div>
+      </div>
+
+      {/* User */}
+      {user && (
+
+        <div className="mt-10 rounded-2xl border border-zinc-800 bg-zinc-900/70 p-4">
+
+          <p className="text-sm text-zinc-500">
+            Welcome back
+          </p>
+
+          <h3 className="mt-1 text-lg font-semibold">
+
+            {user.email?.split('@')[0]}
+
+          </h3>
+
+        </div>
+
+      )}
 
       {/* Nav */}
-      <nav className="mt-14 flex flex-1 flex-col gap-3">
+      <nav className="mt-10 flex flex-1 flex-col gap-3">
 
         {links.map((link, index) => {
 
@@ -130,7 +145,7 @@ export default function Sidebar() {
 
               initial={{
                 opacity: 0,
-                x: -20,
+                x: -10,
               }}
 
               animate={{
@@ -139,50 +154,32 @@ export default function Sidebar() {
               }}
 
               transition={{
-                delay: 0.15 * index,
+                delay: index * 0.08,
               }}
             >
 
-              <Link
-                href={link.href}
-              >
+              <Link href={link.href}>
 
                 <motion.div
 
                   whileHover={{
-                    scale: 1.03,
-                    x: 6,
+                    x: 4,
                   }}
 
                   whileTap={{
                     scale: 0.98,
                   }}
 
-                  className={`group relative flex items-center gap-4 overflow-hidden rounded-2xl px-5 py-4 transition-all duration-300 ${
+                  className={`flex items-center gap-4 rounded-2xl px-5 py-4 transition-all ${
                     active
                       ? 'bg-gradient-to-r from-blue-500/20 to-purple-500/20 text-white'
                       : 'text-zinc-400 hover:bg-white/5 hover:text-white'
                   }`}
                 >
 
-                  {/* Glow */}
-                  {active && (
+                  <Icon size={22} />
 
-                    <motion.div
-
-                      layoutId="sidebarGlow"
-
-                      className="absolute inset-0 rounded-2xl border border-blue-500/20 bg-blue-500/10"
-                    />
-
-                  )}
-
-                  <Icon
-                    size={24}
-                    className="relative z-10"
-                  />
-
-                  <span className="relative z-10 text-lg font-medium">
+                  <span className="text-lg">
                     {link.label}
                   </span>
 
@@ -199,26 +196,22 @@ export default function Sidebar() {
       </nav>
 
       {/* Logout */}
-      <motion.button
+      {user && (
 
-        whileHover={{
-          scale: 1.02,
-        }}
+        <button
 
-        whileTap={{
-          scale: 0.98,
-        }}
+          onClick={logout}
 
-        onClick={logout}
+          className="flex items-center justify-center gap-3 rounded-2xl border border-red-500/20 bg-red-500/10 px-5 py-4 text-red-300 transition hover:bg-red-500/20"
+        >
 
-        className="flex items-center justify-center gap-3 rounded-2xl border border-red-500/20 bg-red-500/10 px-5 py-4 text-red-300 transition hover:bg-red-500/20"
-      >
+          <LogOut size={20} />
 
-        <LogOut size={20} />
+          Logout
 
-        Logout
+        </button>
 
-      </motion.button>
+      )}
 
     </motion.aside>
 
