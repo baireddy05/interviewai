@@ -387,7 +387,13 @@ const [
 
   // NORMAL NEXT QUESTION
   setLoadingNextQuestion(true)
+  window.scrollTo({
 
+  top: 0,
+
+  behavior: 'smooth',
+
+})
   setTimeout(async () => {
 
     setQuestionNumber(
@@ -430,14 +436,7 @@ const [
 
   return (
 
-    <motion.main
-
-      initial={{ opacity: 0 }}
-
-      animate={{ opacity: 1 }}
-
-      className="min-h-screen bg-[#050505] text-white"
-    >
+    <main className="min-h-screen bg-[#050505] text-white">
 
       {/* Glow */}
       <div className="absolute left-[-120px] top-[-120px] h-[300px] w-[300px] rounded-full bg-blue-500/20 blur-3xl" />
@@ -733,8 +732,7 @@ const [
         opacity: 0,
       }}
 
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-md"
-    >
+className="fixed left-0 top-0 z-[9999] flex h-screen w-screen items-center justify-center bg-black/80 backdrop-blur-md"    >
 
       <div className="flex flex-col items-center">
 
@@ -793,8 +791,7 @@ const [
         opacity: 0,
       }}
 
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-xl"
-    >
+className="fixed left-0 top-0 z-[9999] flex h-screen w-screen items-center justify-center bg-black/80 backdrop-blur-md"    >
 
       <div className="flex flex-col items-center">
 
@@ -1086,6 +1083,6 @@ const [
 
       </div>
 
-    </motion.main>
+    </main>
   )
 }
