@@ -88,6 +88,8 @@ export default function RootLayout({
 
         </AuthProvider>
 
+        <Analytics />
+
       </body>
 
     </html>
