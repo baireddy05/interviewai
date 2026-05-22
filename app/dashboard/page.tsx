@@ -344,6 +344,7 @@ export default function DashboardPage() {
                 <ResponsiveContainer
                   width="100%"
                   height="100%"
+                  minWidth={0}
                 >
 
                   <LineChart
@@ -392,6 +393,7 @@ export default function DashboardPage() {
                 <ResponsiveContainer
                   width="100%"
                   height="100%"
+                  minWidth={0}
                 >
 
                   <BarChart
