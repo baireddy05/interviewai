@@ -191,11 +191,7 @@ export default function HistoryPage() {
           return (
 
             <motion.div
-
               key={session.id}
-
-              layout
-
               className="overflow-hidden rounded-3xl border border-zinc-800 bg-zinc-900/50 backdrop-blur-xl"
             >
 
@@ -356,11 +352,7 @@ export default function HistoryPage() {
                           return (
 
                             <motion.div
-
                               key={question.id}
-
-                              layout
-
                               className="overflow-hidden rounded-3xl border border-zinc-800 bg-black/30"
                             >
 
